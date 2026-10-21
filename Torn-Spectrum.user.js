@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Torn Spectrum
 // @namespace    https://github.com/Eaglewing91
-// @version      1.3.0
+// @version      1.3.1
 // @description  Sensory-friendly colour layers for Torn, built with autism, ADHD and visual needs in mind — calm / low-stimulation themes, coloured reading overlays, colour-blind assist, reading ruler, reduced motion and readable text. Visual only: makes no network requests and needs no API key.
 // @author       Eaglewing [571041]
 // @license      MIT
@@ -117,6 +117,14 @@
   // Torn PDA can re-inject userscripts into the same page — only ever run once
   if (window.__tornSpectrumLoaded) return;
   window.__tornSpectrumLoaded = true;
+
+  // Some managers (e.g. Torn PDA at "start") run before <html> exists — wait for it
+  if (document.documentElement) main();
+  else new MutationObserver((m, o) => {
+    if (document.documentElement) { o.disconnect(); main(); }
+  }).observe(document, { childList: true });
+
+  function main() {
 
   /* ------------------------------------------------------------------ */
   /*  Settings                                                           */
@@ -625,4 +633,5 @@ li.tcl-spectrum .icon-wrapper svg{fill:currentColor}
 @media (prefers-reduced-motion:reduce){.tcl-knob,.tcl-knob::after{transition:none}}
 `;
   }
+  } // end main
 })();

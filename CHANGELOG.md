@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.3.1
+- Fix: the script now waits for the page to exist before starting, so it can't fail when a manager (e.g. Torn PDA) injects it very early
+- Added forum post and screenshots in `docs/`
+
 ## 1.3.0 — First public release
 - Colour layers: Calm, Low stimulation, Paper, Night warm, Greyscale, High contrast
 - Colour-blind assist: Protan, Deutan and Tritan
