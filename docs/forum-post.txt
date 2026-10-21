@@ -7,7 +7,6 @@ THREAD TITLE:
   Built with autism, ADHD and visual needs in mind
   v1.3.1 · Free & open source (MIT) · Desktop & Torn PDA · No API key
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-[IMAGE: https://raw.githubusercontent.com/Eaglewing91/Torn-Spectrum/main/docs/screenshots/hero.png]
 Torn's Dark Mode is great, but one dark theme doesn't suit everyone's eyes or brain. Torn Spectrum adds optional colour layers you can mix and adjust until Torn feels comfortable to YOU: calm and low-stimulation themes, coloured reading overlays, colour-blind assist, a reading ruler, reduced motion and easier-to-read text.
 It's visual only. No API key, no requests of any kind, and it never clicks anything for you.
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -19,7 +18,6 @@ Sensory needs vary a lot from person to person, so instead of a single theme Tor
 ▌ 📍 WHERE TO FIND IT
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Open your avatar menu (top right) and tap "Torn Spectrum", right under Dark Mode. On a keyboard you can also press Alt+Shift+C.
-[IMAGE: https://raw.githubusercontent.com/Eaglewing91/Torn-Spectrum/main/docs/screenshots/menu.png]
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ▌ 🎨 COLOUR LAYERS
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -30,19 +28,18 @@ Open your avatar menu (top right) and tap "Torn Spectrum", right under Dark Mode
 ◆ Greyscale – removes all colour to cut distraction
 ◆ High contrast – sharper text and edges for low vision
 Brightness, contrast and colour sliders fine-tune any layer, and it all works on top of Torn's own Dark Mode.
-[IMAGE: https://raw.githubusercontent.com/Eaglewing91/Torn-Spectrum/main/docs/screenshots/layers.png]
+[IMAGE: https://raw.githubusercontent.com/Eaglewing91/Torn-Spectrum/main/docs/screenshots/panel-layers.png]
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ▌ 🟦 COLOURED OVERLAYS
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Tinted overlays work like the coloured reading overlays many people use for visual stress and dyslexia. Choose blue, aqua, green, yellow, peach, rose, lilac or grey, set the strength, and the overlay adapts to Torn's light or dark mode automatically. Everyone's best colour is different, so try a few.
-[IMAGE: https://raw.githubusercontent.com/Eaglewing91/Torn-Spectrum/main/docs/screenshots/overlays.png]
+[IMAGE: https://raw.githubusercontent.com/Eaglewing91/Torn-Spectrum/main/docs/screenshots/panel-overlays.png]
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ▌ 👁️ COLOUR-BLIND ASSIST
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ◆ Protan (red-weak), Deutan (green-weak) and Tritan (blue-yellow) assist layers shift Torn's colours so red, green, blue and yellow cues are easier to tell apart.
-◆ They may look odd with typical colour vision. They're designed for colour-blind players.
+◆ They may look odd with typical colour vision. They're designed for colour-blind players, and you'll find them in the colour layer list above.
 ◆ Pair them with "Underline links" so links never rely on colour alone.
-[IMAGE: https://raw.githubusercontent.com/Eaglewing91/Torn-Spectrum/main/docs/screenshots/colourblind.png]
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ▌ 📖 FOCUS & READING
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -52,13 +49,12 @@ Tinted overlays work like the coloured reading overlays many people use for visu
 ◆ Extra text spacing – wider letter and word spacing
 ◆ Underline links – so links don't depend on colour
 ◆ Strong focus outline – a bright outline for keyboard users
-[IMAGE: https://raw.githubusercontent.com/Eaglewing91/Torn-Spectrum/main/docs/screenshots/ruler.png]
-[IMAGE: https://raw.githubusercontent.com/Eaglewing91/Torn-Spectrum/main/docs/screenshots/reading.png]
+[IMAGE: https://raw.githubusercontent.com/Eaglewing91/Torn-Spectrum/main/docs/screenshots/panel-reading.png]
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ▌ ⚙️ THE SETTINGS PANEL
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Everything lives in one panel. The switch at the top turns every layer on or off at once (Alt+Shift+X on a keyboard). Settings are saved in your browser and shared across your open Torn tabs.
-[IMAGE: https://raw.githubusercontent.com/Eaglewing91/Torn-Spectrum/main/docs/screenshots/panel.png]
+[IMAGE: https://raw.githubusercontent.com/Eaglewing91/Torn-Spectrum/main/docs/screenshots/panel-full.png]
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ▌ 🤝 WHO IT MAY HELP
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -108,5 +104,5 @@ GitHub: https://github.com/Eaglewing91/Torn-Spectrum
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 I'd really love to hear from players who use this day to day, especially if you're neurodivergent or have a visual impairment. Tell me what helps, what doesn't and what's missing. Reply here, open an issue on GitHub, or mail me in game.
 Torn staff are welcome to contact me with any concerns about this script.
-Screenshots are taken on a demo page with made-up names. Torn Spectrum is a fan-made script and is not affiliated with or endorsed by Torn.
+Torn Spectrum is a fan-made script and is not affiliated with or endorsed by Torn.
 Eaglewing [571041]
