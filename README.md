@@ -22,7 +22,7 @@ Sensory needs vary a lot from person to person, so instead of a single theme Tor
 |---|---|
 | **Colour layers** | Calm, Low stimulation, Paper (sepia), Night warm, Greyscale, High contrast |
 | **Colour-blind assist** | Protan (red-weak), Deutan (green-weak) and Tritan (blue-yellow) correction filters |
-| **Coloured overlays** | Reading-overlay tints in blue, aqua, green, yellow, peach, rose, lilac and grey, with adjustable strength; automatically matches Torn's light or dark mode |
+| **Coloured overlays** | Reading-overlay tints in blue, aqua, green, yellow, peach, rose, lilac and grey, plus a Dark overlay that dims the whole screen, with adjustable strength; automatically matches Torn's light or dark mode |
 | **Fine-tune** | Brightness, contrast and colour sliders on top of any layer |
 | **Reading ruler** | Dims the screen except a band that follows your mouse or finger |
 | **Reduce motion** | Stops animations and transitions |

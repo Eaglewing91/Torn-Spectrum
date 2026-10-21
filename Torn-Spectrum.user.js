@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Torn Spectrum
 // @namespace    https://github.com/Eaglewing91
-// @version      1.3.1
+// @version      1.4.0
 // @description  Sensory-friendly colour layers for Torn, built with autism, ADHD and visual needs in mind — calm / low-stimulation themes, coloured reading overlays, colour-blind assist, reading ruler, reduced motion and readable text. Visual only: makes no network requests and needs no API key.
 // @author       Eaglewing [571041]
 // @license      MIT
@@ -182,6 +182,7 @@
     rose:   { name: 'Rose',   color: '#ffa3b8' },
     lilac:  { name: 'Lilac',  color: '#c9a8ff' },
     grey:   { name: 'Grey',   color: '#b5b5b5' },
+    dark:   { name: 'Dark',   color: '#000000', blend: 'normal' }, // dims the whole screen
   };
 
   // Daltonisation matrices (sRGB) for the colour-blind assist layers
@@ -263,7 +264,7 @@
     if (!overlay) return;
     const t = TINTS[s.tint];
     if (!s.enabled || !t || !t.color) { overlay.style.display = 'none'; return; }
-    let blend = s.tintBlend;
+    let blend = t.blend || s.tintBlend;
     if (blend === 'auto') blend = isDarkTorn() ? 'screen' : 'multiply';
     overlay.style.background = t.color;
     overlay.style.opacity = String(s.tintStrength / 100);
@@ -342,7 +343,7 @@
       `<span class="tcl-swatch" style="filter:${p.filter || 'none'}"></span><span class="tcl-cname">${p.name}</span></label>`).join('');
     const chips = Object.entries(TINTS).map(([k, t]) =>
       `<label class="tcl-chip" title="${t.name}"><input type="radio" name="tcl-tint" data-key="tint" value="${k}">` +
-      `<span class="tcl-chipdot" style="background:${t.color || 'transparent'}"></span><span>${t.name}</span></label>`).join('');
+      `<span class="tcl-chipdot" style="background:${t.color || 'transparent'}${t.blend ? ';border-color:#777' : ''}"></span><span>${t.name}</span></label>`).join('');
 
     return `
       <div class="tcl-head">
@@ -360,7 +361,7 @@
         </section>
         <section>
           <h3>Coloured overlay</h3>
-          <p class="tcl-hint">Tinted overlays, like reading overlays, can ease visual stress. Everyone’s best colour is different, so try a few.</p>
+          <p class="tcl-hint">Tinted overlays, like reading overlays, can ease visual stress. Everyone’s best colour is different, so try a few. Dark simply dims the whole screen.</p>
           <div class="tcl-chips" role="radiogroup" aria-label="Overlay colour">${chips}</div>
           ${range('tintStrength', 'Strength', 5, 60, 1, '%')}
           <label class="tcl-row"><span>Overlay style</span>

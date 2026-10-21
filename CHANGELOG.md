@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.4.0
+- New **Dark** overlay: dims the whole screen at your chosen strength (works in light and dark mode)
+
 ## 1.3.1
 - Fix: the script now waits for the page to exist before starting, so it can't fail when a manager (e.g. Torn PDA) injects it very early
 - Added forum post and screenshots in `docs/`
