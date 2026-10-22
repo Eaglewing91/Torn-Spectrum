@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.5.0
+- New **Pause animated images**: freezes animated profile pictures, signatures and honor bars on profile pages (or everywhere on Torn). Tap a paused image to play it. Uses only images already loaded, so it makes no requests
+
 ## 1.4.0
 - New **Dark** overlay: dims the whole screen at your chosen strength (works in light and dark mode)
 

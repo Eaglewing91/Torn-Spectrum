@@ -26,6 +26,7 @@ Sensory needs vary a lot from person to person, so instead of a single theme Tor
 | **Fine-tune** | Brightness, contrast and colour sliders on top of any layer |
 | **Reading ruler** | Dims the screen except a band that follows your mouse or finger |
 | **Reduce motion** | Stops animations and transitions |
+| **Pause animated images** | Freezes animated profile pictures, signatures and honor bars, on profile pages or everywhere on Torn. Tap a paused image to play it |
 | **Readable font** | Atkinson Hyperlegible, Lexend or OpenDyslexic if installed on your device, otherwise Verdana |
 | **Extra text spacing** | Wider letter and word spacing |
 | **Underline links** | So links don't rely on colour alone |
@@ -38,8 +39,8 @@ Layers work alongside Torn's own Dark Mode, so you can use either Torn theme und
 Everyone is different, so these are features worth trying, not guaranteed fixes. Torn Spectrum is not a medical tool and does not treat any condition.
 
 **Neurodivergence**
-- May help players with **autism or sensory processing differences**: Calm, Low stimulation, Greyscale, Reduce motion, coloured overlays.
-- May help players with **ADHD**: Reading ruler, Reduce motion, Low stimulation, Greyscale.
+- May help players with **autism or sensory processing differences**: Calm, Low stimulation, Greyscale, Reduce motion, Pause animated images, coloured overlays.
+- May help players with **ADHD**: Reading ruler, Reduce motion, Pause animated images, Low stimulation, Greyscale.
 - May help players with **sensory processing disorder (SPD)**: Low stimulation, Reduce motion, Night warm.
 - May help players with **dyspraxia (DCD)**: Reading ruler, extra text spacing, strong focus outline.
 
@@ -53,7 +54,7 @@ Everyone is different, so these are features worth trying, not guaranteed fixes.
 - May help players with **photophobia (light sensitivity)**: Night warm, lower brightness and contrast, grey or peach overlays.
 - May help players with **post-concussion syndrome**: Low stimulation, Reduce motion, Night warm.
 - May help players with **eye strain** from long sessions: Night warm, Paper, Calm.
-- May help players with **photosensitive epilepsy**: Reduce motion cuts animated movement, but it **cannot guarantee** protection from flashing content.
+- May help players with **photosensitive epilepsy**: Reduce motion and Pause animated images cut animated movement, but they **cannot guarantee** protection from flashing content.
 
 **Vision**
 - May help players with **low vision**: High contrast, brightness/contrast sliders, strong focus outline, underline links.
@@ -66,7 +67,7 @@ Everyone is different, so these are features worth trying, not guaranteed fixes.
 
 **Other**
 - May help players with **anxiety or sensory overload**: Calm, Low stimulation, Reduce motion.
-- May help players with **vestibular disorders or motion sensitivity**: Reduce motion.
+- May help players with **vestibular disorders or motion sensitivity**: Reduce motion, Pause animated images.
 - May help players with **chronic fatigue (ME/CFS) or long COVID**: Low stimulation, Night warm.
 
 ## Installation
@@ -96,6 +97,7 @@ Torn Spectrum follows Torn's scripting rules. It:
 - only changes how the page you are currently viewing **looks** (CSS and visual overlays);
 - makes **no requests** of any kind: no Torn page requests, no API calls, no external sites, no websockets;
 - never clicks, submits or triggers anything on the page;
+- pauses animated images by copying a still frame from images the page has **already loaded**, so it never downloads anything;
 - adds a "Torn Spectrum" row to the avatar menu that only opens the script's own panel.
 
 ## Terms of Service

@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Torn Spectrum
 // @namespace    https://github.com/Eaglewing91
-// @version      1.4.0
-// @description  Sensory-friendly colour layers for Torn, built with autism, ADHD and visual needs in mind — calm / low-stimulation themes, coloured reading overlays, colour-blind assist, reading ruler, reduced motion and readable text. Visual only: makes no network requests and needs no API key.
+// @version      1.5.0
+// @description  Sensory-friendly colour layers for Torn, built with autism, ADHD and visual needs in mind — calm / low-stimulation themes, coloured reading overlays, colour-blind assist, reading ruler, reduced motion, paused animated images and readable text. Visual only: makes no network requests and needs no API key.
 // @author       Eaglewing [571041]
 // @license      MIT
 // @homepageURL  https://github.com/Eaglewing91/Torn-Spectrum
@@ -38,6 +38,8 @@
  *    cues Torn relies on, and "Underline links" stops links depending on colour alone.
  *  - The reading ruler and reduced motion help with focus and attention by cutting
  *    movement and visual clutter around what you're reading.
+ *  - Pause animated images freezes animated profile pictures, signatures and honor
+ *    bars, which are some of the most distracting moving things on Torn.
  *  - Readable font and extra spacing make dense text easier to track.
  *
  * Everything is optional, adjustable and switched off by default, so each player
@@ -56,9 +58,11 @@
  *
  * Neurodivergence
  *  - May help players with autism or sensory processing differences: Calm, Low
- *    stimulation, Greyscale, Reduce motion and coloured overlays can ease sensory overload.
- *  - May help players with ADHD: the reading ruler, Reduce motion, Low stimulation and
- *    Greyscale cut distracting movement and colour so it's easier to stay focused.
+ *    stimulation, Greyscale, Reduce motion, Pause animated images and coloured
+ *    overlays can ease sensory overload.
+ *  - May help players with ADHD: the reading ruler, Reduce motion, Pause animated images,
+ *    Low stimulation and Greyscale cut distracting movement and colour so it's easier
+ *    to stay focused.
  *  - May help players with sensory processing disorder (SPD): Low stimulation, Reduce
  *    motion and Night warm soften a busy, bright screen.
  *  - May help players with dyspraxia (DCD): the reading ruler, extra text spacing and
@@ -80,8 +84,9 @@
  *  - May help players with post-concussion syndrome: Low stimulation, Reduce motion
  *    and Night warm.
  *  - May help players with eye strain from long sessions: Night warm, Paper and Calm.
- *  - May help players with photosensitive epilepsy: Reduce motion cuts animated
- *    movement, but it CANNOT guarantee protection from flashing content.
+ *  - May help players with photosensitive epilepsy: Reduce motion and Pause animated
+ *    images cut animated movement, but they CANNOT guarantee protection from flashing
+ *    content.
  *
  * Vision
  *  - May help players with low vision: High contrast, the brightness and contrast
@@ -100,7 +105,8 @@
  * Other
  *  - May help players with anxiety or sensory overload: Calm, Low stimulation and
  *    Reduce motion.
- *  - May help players with vestibular disorders or motion sensitivity: Reduce motion.
+ *  - May help players with vestibular disorders or motion sensitivity: Reduce motion
+ *    and Pause animated images.
  *  - May help players with chronic fatigue (ME/CFS) or long COVID: Low stimulation and
  *    Night warm can make sessions less draining.
  *
@@ -108,6 +114,8 @@
  * - This script only changes how the page you are viewing LOOKS (CSS + overlays).
  * - It makes no requests of any kind (no Torn page requests, no API calls, no external sites).
  * - It never clicks, submits or triggers anything on the page.
+ * - Pause animated images copies a still frame from images the page has ALREADY loaded
+ *   onto a canvas. It never downloads or re-downloads an image.
  * - Settings are saved in your own browser (localStorage) and never leave it.
  */
 
@@ -147,6 +155,8 @@
     textSpacing: false,
     underlineLinks: false,
     strongFocus: false,
+    pauseGifs: false,
+    pauseScope: 'profile',
   };
 
   const load = () => {
@@ -290,7 +300,82 @@
     fxStyle.textContent = effectsCSS();
     applyOverlay();
     drawRuler();
+    applyGifs();
   }
+
+  /* ------------------------------------------------------------------ */
+  /*  Pause animated images                                              */
+  /*  Draws the frame that is already on screen onto a canvas and hides  */
+  /*  the moving image. Uses only images the page has already loaded,    */
+  /*  so no image is ever requested by this script.                      */
+  /* ------------------------------------------------------------------ */
+  const frozen = new Map();        // img -> { canvas, src }
+  const playedByUser = new WeakSet();
+  const MIN_SIZE = 40;             // leave tiny icons and loading spinners alone
+  const ANIM_RE = /\.(gif|webp)(?:$|[?#])|^data:image\/(gif|webp)/i;
+
+  const pauseActive = () => s.enabled && s.pauseGifs &&
+    (s.pauseScope === 'everywhere' || location.pathname === '/profiles.php');
+
+  function freeze(img) {
+    if (!img.complete || !img.naturalWidth) return;
+    if (img.naturalWidth < MIN_SIZE && img.naturalHeight < MIN_SIZE) return;
+    const rect = img.getBoundingClientRect();
+    if (!rect.width || !rect.height) return;   // not laid out yet — try again on the next scan
+
+    const canvas = document.createElement('canvas');
+    canvas.width = img.naturalWidth;
+    canvas.height = img.naturalHeight;
+    try { canvas.getContext('2d').drawImage(img, 0, 0); } catch (e) { return; }
+
+    canvas.className = (img.className ? img.className + ' ' : '') + 'tcl-frozen';
+    canvas.setAttribute('style', img.getAttribute('style') || '');
+    const cs = getComputedStyle(img);
+    canvas.style.display = cs.display === 'inline' ? 'inline-block' : cs.display;
+    canvas.style.boxSizing = 'border-box';
+    canvas.style.width = rect.width + 'px';
+    canvas.style.height = rect.height + 'px';
+    canvas.style.verticalAlign = cs.verticalAlign;
+    canvas.setAttribute('role', 'img');
+    canvas.setAttribute('aria-label', (img.alt ? img.alt + ' — ' : '') + 'animation paused, tap to play');
+    canvas.title = 'Animation paused by Torn Spectrum — tap to play';
+
+    // Tapping a paused image plays it. Stopped here so it never reaches the page or follows a link.
+    canvas.addEventListener('click', e => {
+      e.preventDefault(); e.stopPropagation();
+      playedByUser.add(img);
+      unfreeze(img);
+    });
+
+    img.after(canvas);
+    img.classList.add('tcl-hidden-anim');
+    frozen.set(img, { canvas, src: img.currentSrc || img.src });
+  }
+
+  function unfreeze(img) {
+    const f = frozen.get(img);
+    if (!f) return;
+    f.canvas.remove();
+    img.classList.remove('tcl-hidden-anim');
+    frozen.delete(img);
+  }
+
+  function scanGifs() {
+    gifTimer = 0;
+    // Tidy up: images Torn removed or swapped for a new picture
+    frozen.forEach((f, img) => {
+      if (!img.isConnected) { f.canvas.remove(); frozen.delete(img); }
+      else if ((img.currentSrc || img.src) !== f.src) unfreeze(img);
+    });
+    if (!pauseActive()) { frozen.forEach((f, img) => unfreeze(img)); return; }
+    document.querySelectorAll('img').forEach(img => {
+      if (frozen.has(img) || playedByUser.has(img) || img.closest('.tcl-panel')) return;
+      if (ANIM_RE.test(img.currentSrc || img.src)) freeze(img);
+    });
+  }
+  let gifTimer = 0;
+  const queueGifScan = () => { if (!gifTimer) gifTimer = setTimeout(scanGifs, 250); };
+  function applyGifs() { if (gifTimer) { clearTimeout(gifTimer); gifTimer = 0; } scanGifs(); }
 
   /* ------------------------------------------------------------------ */
   /*  Avatar settings-menu entry (sits under Torn's Dark Mode row)       */
@@ -391,6 +476,15 @@
           ${tog('textSpacing', 'Extra text spacing', 'Wider letter and word spacing')}
           ${tog('underlineLinks', 'Underline links', 'So links don’t rely on colour alone')}
           ${tog('strongFocus', 'Strong focus outline', 'Bright outline for keyboard navigation')}
+          ${tog('pauseGifs', 'Pause animated images', 'Freezes animated profile pictures, signatures and honor bars. Tap one to play it.')}
+          <div class="tcl-sub" data-gif-opts>
+            <label class="tcl-row"><span>Where</span>
+              <select data-key="pauseScope">
+                <option value="profile">Profile pages</option>
+                <option value="everywhere">Everywhere on Torn</option>
+              </select>
+            </label>
+          </div>
         </section>
       </div>
       <div class="tcl-foot">
@@ -416,6 +510,7 @@
     const p = PRESETS[s.preset];
     panel.querySelector('#tcl-desc').textContent = p ? p.desc : '';
     panel.querySelector('[data-ruler-opts]').hidden = !s.ruler;
+    panel.querySelector('[data-gif-opts]').hidden = !s.pauseGifs;
     panel.classList.toggle('tcl-off', !s.enabled);
   }
 
@@ -506,8 +601,14 @@
       menuQueued = true;
       requestAnimationFrame(() => { menuQueued = false; placeMenuItem(); });
     };
-    new MutationObserver(queueMenu).observe(document.body || root, { childList: true, subtree: true });
+    new MutationObserver(() => { queueMenu(); if (s.pauseGifs) queueGifScan(); })
+      .observe(document.body || root, { childList: true, subtree: true, attributes: true, attributeFilter: ['src', 'srcset'] });
     placeMenuItem();
+
+    // Images finish loading after they're added — catch them as they arrive (listening only)
+    document.addEventListener('load', e => {
+      if (s.pauseGifs && e.target && e.target.tagName === 'IMG') queueGifScan();
+    }, true);
 
     applyAll();
   }
@@ -618,6 +719,8 @@
 .tcl-btn-ghost{background:transparent}
 
 li.tcl-spectrum a{cursor:pointer}
+img.tcl-hidden-anim{display:none !important}
+canvas.tcl-frozen{cursor:pointer}
 li.tcl-spectrum .icon-wrapper svg{fill:currentColor}
 
 @media (max-width:600px){
