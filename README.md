@@ -85,6 +85,7 @@ Everyone is different, so these are features worth trying, not guaranteed fixes.
 ## How to use
 
 - Open your **avatar menu** (top right) and tap **Torn Spectrum**, just under Dark Mode.
+- **Torn PDA:** tap the round **palette button** at the bottom left of the screen. (It also appears on phone browsers where the avatar-menu entry isn't available.) You can move it to the right in the panel.
 - Pick a colour layer, add an overlay if you like, and switch on any reading or focus options.
 - The switch at the top of the panel turns every layer on or off at once.
 - Keyboard shortcuts: **Alt+Shift+C** opens the panel, **Alt+Shift+X** turns layers on/off.
@@ -98,7 +99,7 @@ Torn Spectrum follows Torn's scripting rules. It:
 - makes **no requests** of any kind: no Torn page requests, no API calls, no external sites, no websockets;
 - never clicks, submits or triggers anything on the page;
 - pauses animated images by copying a still frame from images the page has **already loaded**, so it never downloads anything;
-- adds a "Torn Spectrum" row to the avatar menu that only opens the script's own panel.
+- adds a "Torn Spectrum" row to the avatar menu, and a floating button in Torn PDA, that only open the script's own panel.
 
 ## Terms of Service
 

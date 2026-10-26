@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Torn Spectrum
 // @namespace    https://github.com/Eaglewing91
-// @version      1.5.0
+// @version      1.6.0
 // @description  Sensory-friendly colour layers for Torn, built with autism, ADHD and visual needs in mind — calm / low-stimulation themes, coloured reading overlays, colour-blind assist, reading ruler, reduced motion, paused animated images and readable text. Visual only: makes no network requests and needs no API key.
 // @author       Eaglewing [571041]
 // @license      MIT
@@ -47,7 +47,8 @@
  * looks in order to enjoy playing it.
  *
  * Open it from your avatar menu, under Dark Mode ("Torn Spectrum"),
- * or with Alt+Shift+C on a keyboard.
+ * or with Alt+Shift+C on a keyboard. In Torn PDA (and on phones where that menu
+ * row can't be added) a small floating palette button opens it instead.
  *
  * Works in Tampermonkey / Violentmonkey (desktop) and in Torn PDA (Android & iOS).
  *
@@ -157,6 +158,7 @@
     strongFocus: false,
     pauseGifs: false,
     pauseScope: 'profile',
+    floaterSide: 'left',
   };
 
   const load = () => {
@@ -301,6 +303,7 @@
     applyOverlay();
     drawRuler();
     applyGifs();
+    updateFloater();
   }
 
   /* ------------------------------------------------------------------ */
@@ -408,6 +411,38 @@
     const dark = document.querySelector('ul.settings-menu > li.dark-mode');
     if (!dark || dark.parentElement.querySelector(':scope > li.tcl-spectrum')) return;
     dark.after(buildMenuItem());
+    updateFloater();
+  }
+
+  /* ------------------------------------------------------------------ */
+  /*  Floating button — Torn PDA, and touch devices without the menu row */
+  /* ------------------------------------------------------------------ */
+  const IS_PDA = typeof window.flutter_inappwebview !== 'undefined' || /TornPDA/i.test(navigator.userAgent);
+  const IS_TOUCH = !!(window.matchMedia && window.matchMedia('(hover: none) and (pointer: coarse)').matches);
+  let floater;
+
+  const floaterWanted = () => IS_PDA || (IS_TOUCH && !document.querySelector('li.tcl-spectrum'));
+
+  function buildFloater() {
+    floater = document.createElement('button');
+    floater.type = 'button';
+    floater.className = 'tcl-fab';
+    floater.setAttribute('aria-label', 'Open Torn Spectrum');
+    floater.title = 'Torn Spectrum';
+    floater.innerHTML = MENU_ICON.replace('width="28" height="28" viewBox="-6 -4 28 28"', 'width="22" height="22" viewBox="0 0 16 16"');
+    // Only opens our own panel; stopped here so the tap never reaches the page
+    floater.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); togglePanel(); });
+    root.appendChild(floater);
+  }
+
+  function updateFloater() {
+    const want = floaterWanted();
+    if (want && !floater) buildFloater();
+    if (!floater) return;
+    floater.style.display = want ? 'flex' : 'none';
+    floater.dataset.side = s.floaterSide;
+    floater.dataset.active = s.enabled ? '1' : '0';
+    if (panel) panel.querySelector('[data-fab-opts]').hidden = !want;
   }
 
 
@@ -486,6 +521,16 @@
             </label>
           </div>
         </section>
+        <section data-fab-opts hidden>
+          <h3>Floating button</h3>
+          <p class="tcl-hint">Shown in Torn PDA and on phones where the avatar-menu entry isn’t available.</p>
+          <label class="tcl-row"><span>Side</span>
+            <select data-key="floaterSide">
+              <option value="left">Left</option>
+              <option value="right">Right</option>
+            </select>
+          </label>
+        </section>
       </div>
       <div class="tcl-foot">
         <p>Open any time from your avatar menu → <strong>Torn Spectrum</strong>.<span class="tcl-keys"> Keyboard: <kbd>Alt+Shift+C</kbd> panel · <kbd>Alt+Shift+X</kbd> on/off.</span></p>
@@ -511,6 +556,7 @@
     panel.querySelector('#tcl-desc').textContent = p ? p.desc : '';
     panel.querySelector('[data-ruler-opts]').hidden = !s.ruler;
     panel.querySelector('[data-gif-opts]').hidden = !s.pauseGifs;
+    panel.querySelector('[data-fab-opts]').hidden = !floaterWanted();
     panel.classList.toggle('tcl-off', !s.enabled);
   }
 
@@ -588,6 +634,8 @@
     rulerBottom.setAttribute('aria-hidden', 'true');
 
     root.append(overlay, rulerTop, rulerBottom);
+    // Give Torn a moment to build its menu before deciding a touch device needs the floater
+    setTimeout(updateFloater, IS_PDA ? 0 : 3000);
 
     // Re-pick the overlay blend if the user flips Torn's own dark mode (visual only)
     if (document.body) {
@@ -720,6 +768,16 @@
 
 li.tcl-spectrum a{cursor:pointer}
 img.tcl-hidden-anim{display:none !important}
+
+.tcl-fab{position:fixed;z-index:2147483600;bottom:calc(96px + env(safe-area-inset-bottom,0px));width:44px;height:44px;
+  border-radius:50%;padding:0;margin:0;display:none;align-items:center;justify-content:center;cursor:pointer;
+  background:#24272c;color:#e8e8e8;border:2px solid rgba(255,255,255,.25);box-shadow:0 2px 8px rgba(0,0,0,.45);
+  opacity:.85;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.tcl-fab svg{fill:currentColor}
+.tcl-fab[data-side="left"]{left:10px}
+.tcl-fab[data-side="right"]{right:10px}
+.tcl-fab[data-active="1"]{border-color:#6cc4b0}
+.tcl-fab:focus-visible{opacity:1;outline:3px solid #6cc4b0;outline-offset:2px}
 canvas.tcl-frozen{cursor:pointer}
 li.tcl-spectrum .icon-wrapper svg{fill:currentColor}
 

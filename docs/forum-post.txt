@@ -5,7 +5,7 @@ THREAD TITLE:
           🌈  TORN SPECTRUM  🌈
   Sensory-friendly colour layers for Torn
   Built with autism, ADHD and visual needs in mind
-  v1.5.0 · Free & open source (MIT) · Desktop & Torn PDA · No API key
+  v1.6.0 · Free & open source (MIT) · Desktop & Torn PDA · No API key
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Torn's Dark Mode is great, but one dark theme doesn't suit everyone's eyes or brain. Torn Spectrum adds optional colour layers you can mix and adjust until Torn feels comfortable to YOU: calm and low-stimulation themes, coloured reading overlays, colour-blind assist, a reading ruler, reduced motion and easier-to-read text.
 It's visual only. No API key, no requests of any kind, and it never clicks anything for you.
@@ -18,6 +18,7 @@ Sensory needs vary a lot from person to person, so instead of a single theme Tor
 ▌ 📍 WHERE TO FIND IT
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Open your avatar menu (top right) and tap "Torn Spectrum", right under Dark Mode. On a keyboard you can also press Alt+Shift+C.
+On Torn PDA: tap the round palette button at the bottom left of the screen. You can move it to the right in the panel.
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ▌ 🎨 COLOUR LAYERS
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -86,7 +87,7 @@ Torn Spectrum only changes how the page you're viewing LOOKS. It:
 ◆ makes no requests of any kind – no Torn pages, no API calls, no external sites
 ◆ never clicks, submits or triggers anything on the page
 ◆ pauses animated images using the copy your browser has already loaded, so it never downloads anything
-◆ adds a menu row that only opens its own settings panel
+◆ adds a menu row (and a floating button in Torn PDA) that only opens its own settings panel
 ◆ doesn't need or ask for an API key
 Tampermonkey checks GitHub for updates to the script. That's done by Tampermonkey itself, goes to GitHub only and sends no Torn data.
 ◆ Data Storage: Only locally (your visual settings, in your browser)
